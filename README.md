@@ -16,7 +16,7 @@ Right now, you can only play as white and woofbot will always play as black.
 
 ## Screenshot
 
-![Screenshot](http://i.imgur.com/97SXUQA.png)
+![Screenshot](https://lawrence.lu/sc/a342bce8c9.png)
 
 ## Dependencies
 
