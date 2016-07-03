@@ -10,6 +10,7 @@ In a discord server, you may type:
 * `sleep tight pupper` will cause woofbot to send a picture of itself sleeping.
 * `puppy chess [algebraic notation]` will play a move in chess. It will start a game if not already started.
 * `puppy chess resign` will resign the ongoing game if exists.
+* `puppy why` will give a random excuse.
 
 Right now, you can only play as white and woofbot will always play as black.
 

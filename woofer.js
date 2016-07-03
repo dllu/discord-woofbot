@@ -1,6 +1,7 @@
 var Discord = require('discord.js');
 var Stockfish = require('stockfish');
 var Chess = require('chess.js').Chess;
+var why = require('./why.js');
 
 var puppy = new Discord.Client();
 
@@ -52,6 +53,8 @@ puppy.on('message', function(message) {
         puppy.reply(message, 'bark');
     } else if(message.content === 'sleep tight pupper') {
         puppy.reply(message, 'http://i.imgur.com/ZbkyEk8.png');
+    } else if(message.content === 'puppy why') {
+        puppy.reply(message, why.why());
     } else if(message.content.indexOf(CHESS) === 0) {
         var id = message.author.id + '!?#' + message.server.id;
         chessmsg[id] = message;
