@@ -3,7 +3,7 @@ var Stockfish = require('stockfish');
 var Chess = require('chess.js').Chess;
 var why = require('./why.js');
 
-var puppy = new Discord.Client();
+var puppy = new Discord.Client({autoReconnect: true});
 
 var chesses = {};
 var stockfishes = {};
@@ -19,24 +19,27 @@ function strip(s) {
     return s.replace(/^\s+|\s+$/g, '');
 }
 
-function end_game(id, resign) {
+function end_game(id, resign, quiet) {
     if(chesses[id] === undefined) return;
-    var winner;
-    if(resign) {
-        winner = SIDENAMES[chesses[id].turn()] + ' wins by resignation!';
-    } else if(chesses[id].in_checkmate()) {
-        winner = SIDENAMES[chesses[id].turn()] + ' wins by checkmate!';
-    } else if(chesses[id].in_stalemate()) {
-        winner = 'Draw by stalemate!';
-    } else if(chesses[id].in_threefold_repetition()) {
-        winner = 'Draw by threefold repetition!';
-    } else if(chesses[id].insufficient_material()) {
-        winner = 'Draw by insufficient material!';
-    } else if(chesses[id].in_draw()) {
-        winner = 'Draw!';
+    if(!quiet) {
+        var winner;
+        if(resign) {
+            winner = SIDENAMES[chesses[id].turn()] + ' wins by resignation!';
+        } else if(chesses[id].in_checkmate()) {
+            winner = SIDENAMES[chesses[id].turn()] + ' wins by checkmate!';
+        } else if(chesses[id].in_stalemate()) {
+            winner = 'Draw by stalemate!';
+        } else if(chesses[id].in_threefold_repetition()) {
+            winner = 'Draw by threefold repetition!';
+        } else if(chesses[id].insufficient_material()) {
+            winner = 'Draw by insufficient material!';
+        } else if(chesses[id].in_draw()) {
+            winner = 'Draw!';
+        }
+        puppy.reply(chessmsg[id], 'http://i.imgur.com/w4TR9IT.png Game over: ' + winner + 
+                '\n' + chesses[id].pgn({newline_char: '\n'}));
     }
-    puppy.reply(chessmsg[id], 'http://i.imgur.com/w4TR9IT.png Game over: ' + winner + 
-            '\n' + chesses[id].pgn({newline_char: '\n'}));
+    console.log('Chess game end: ', chessmsg[id].author.name, chessmsg[id].server.name);
     delete chesses[id];
     delete stockfishes[id];
     delete thinking[id];
@@ -69,14 +72,12 @@ puppy.on('message', function(message) {
         }
     }
 
-    if(msg === 'woof') {
-        var s = 'woof';
+    if(msg === 'woof' || msg === 'bark' || msg === 'wurf' || msg === 'garuru~') {
+        var s = msg;
         if(Math.random() < 0.01) {
             s += ' http://i.imgur.com/49ZT1dG.png';
         }
         puppy.reply(message, s);
-    } else if(msg === 'bark') {
-        puppy.reply(message, 'bark');
     } else if(msg === 'sleep tight pupper') {
         puppy.reply(message, 'http://i.imgur.com/ZbkyEk8.png');
     } else if(msg === 'puppy why') {
@@ -86,6 +87,7 @@ puppy.on('message', function(message) {
         chessmsg[id] = message;
         if(chesses[id] === undefined) {
             chesses[id] = new Chess();
+            console.log('Chess game: ', message.author.name, message.server.name);
             thinking[id] = false;
             stockfishes[id] = Stockfish();
             stockfishes[id].postMessage('setoption name Contempt value 30');
@@ -106,14 +108,14 @@ puppy.on('message', function(message) {
                     puppy.reply(chessmsg[id], m.san + '\n' + get_fen_img(id));
                     thinking[id] = false;
                     if(chesses[id].game_over()) {
-                        end_game(id, false);
+                        end_game(id, false, false);
                     }
                 }
             }
         }
         var move = strip(msg.substring(CHESS.length + 1));
         if(move === 'resign') {
-            end_game(id, true);
+            end_game(id, true, false);
             return;
         }
         if(thinking[id] === true) {
@@ -129,10 +131,11 @@ puppy.on('message', function(message) {
         stockfishes[id].postMessage('position fen ' + chesses[id].fen());
         stockfishes[id].postMessage('go movetime ' + MOVETIME);
         if(chesses[id].game_over()) {
-            end_game(id, false);
+            end_game(id, false, false);
         }
     }
 });
 
 puppy.loginWithToken(/* INSERT YOUR TOKEN HERE */);
+console.log(puppy)
 
