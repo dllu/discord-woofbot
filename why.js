@@ -22,7 +22,9 @@ function special() {
             'why indeed?',
             'THERE IS AS YET INSUFFICIENT DATA FOR A MEANINGFUL ANSWER',
             'some mysteries are never meant to be solved',
-            "I'm not telling you"
+            "I'm not telling you",
+            'you know why',
+            'instead of asking me why, how about let\'s play chess?'
             ]);
 }
 
@@ -62,9 +64,11 @@ function subject() {
 function proper_noun() {
     return randc([
             'Purple Puppy',
-            'Barack Obama',
-            'Donald Trump',
-            'Hillary Clinton'
+            'Hatsune Miku',
+            'Kuroneko',
+            'Ruri Gokou',
+            'Purple Puppies\' Porpoise',
+            'Sadaharu'
             ]);
 }
 
@@ -89,10 +93,11 @@ function noun() {
             'cat',
             'kitten',
             'weeaboo',
-            'weeb',
             'anime character',
             'waifu',
-            'shiba inu'
+            'shiba inu',
+            'dog',
+            'high school student'
             ]);
 }
 
