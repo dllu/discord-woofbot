@@ -65,18 +65,14 @@ function proper_noun() {
     return randc([
             'Purple Puppy',
             'Hatsune Miku',
-            'Kuroneko',
-            'Ruri Gokou',
-            'Purple Puppies\' Porpoise',
-            'Sadaharu'
+            'Donald Trump',
+            'Woofer',
+            'Purple Puppies\' Porpoise'
             ]);
 }
 
 function noun_phrase() {
     return randc([
-            function() {return noun();},
-            function() {return noun();},
-            function() {return noun();},
             function() {return noun();},
             function() {return noun();},
             function() {return noun();},
@@ -92,11 +88,40 @@ function noun() {
             'puppy',
             'cat',
             'kitten',
-            'weeaboo',
-            'anime character',
-            'waifu',
-            'shiba inu',
             'dog',
+            'stalker',
+            'siege tank',
+            'marine',
+            'marauder',
+            'zealot',
+            'zergling',
+            'baneling',
+            'roach',
+            'queen',
+            'hydralisk',
+            'ultralisk',
+            'adept',
+            'immortal',
+            'sentry',
+            'high templar',
+            'dark templar',
+            'archon',
+            'liberator',
+            'raven',
+            'banshee',
+            'viking',
+            'battlecruiser',
+            'phoenix',
+            'void ray',
+            'carrier',
+            'tempest',
+            'oracle',
+            'mutalisk',
+            'viper',
+            'corruptor',
+            'brood lord',
+            'overlord',
+            'overseer',
             'high school student'
             ]);
 }
@@ -150,12 +175,21 @@ function pos_intensifier() {
 }
 
 function intensifier() {
-    return randc(['', 'not ']) + pos_intensifier();
+    return randc(['', '', 'not ']) + pos_intensifier();
 }
 
 function adjective() {
     return randc([
             'purple',
+            'green',
+            'orange',
+            'red',
+            'blue',
+            'yellow',
+            'pink',
+            'ultraviolet',
+            'infrared',
+            'spotted',
             'fluffy',
             'adorable',
             'terrified',
@@ -165,7 +199,24 @@ function adjective() {
             'doglike',
             'playful',
             'friendly',
-            'cute'
+            'spiky',
+            'pointy',
+            'aerodynamic',
+            'checkered',
+            'mottled',
+            'two-dimensional',
+            'tetrahedral',
+            'triangular',
+            'aggressive',
+            'spherical',
+            'cute',
+            'African American',
+            'differentiable',
+            'open-source',
+            'agreeable',
+            'disagreeable',
+            'tubular',
+            'simply connected',
             ]);
 }
 
@@ -182,6 +233,9 @@ function predicate() {
 
 function present_verb() {
     return randc([
+            function() {return 'defeat';},
+            function() {return 'counter';},
+            function() {return 'neutralize';},
             function() {return 'fool';},
             function() {return 'please';},
             function() {return 'satisfy';},
@@ -201,7 +255,9 @@ function transitive_verb() {
             'commanded',
             'confessed to',
             'hugged',
-            'betrayed'
+            'betrayed',
+            'attacked',
+            'advanced upon',
             ]);
 }
 
@@ -221,6 +277,14 @@ function intransitive_verb() {
 function object() {
     return randc([
             accusative_pronoun,
-            function() {return article() + ' ' + noun_phrase();}
+            function() {
+                var n = noun_phrase();
+                var a = article();
+                var re = /(a|e|i|o|u)/i;
+                if (a == 'a' && n[0].match(re)) {
+                    a = 'an';
+                }
+                return a + ' ' +  n;
+            }
             ])();
 }
